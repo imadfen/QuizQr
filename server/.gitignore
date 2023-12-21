@@ -1,0 +1,25 @@
+# Dependency directories
+node_modules/
+
+# Output directories
+dist/
+
+# IDE/Editor specific files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw*
+
+# Environment variables file (if using dotenv or similar)
+.env
+
+# Logs
+*.log
+
+# macOS specific files
+.DS_Store
+
+package-lock.json
