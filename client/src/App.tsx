@@ -19,18 +19,18 @@ const router = createBrowserRouter(
       <Route
         path="/"
         element={
-          <Layout>
+          <ClientLayout>
             <Home />
-          </Layout>
+          </ClientLayout>
         }
       />
       <Route path="creators">
         <Route
           index
           element={
-            <Layout>
+            <AdminLayout>
               <Creators />
-            </Layout>
+            </AdminLayout>
           }
           loader={async () => {
             const result = await checkLogin();
@@ -62,13 +62,20 @@ export default function App() {
   return <RouterProvider router={router} />;
 }
 
-function Layout(props: PropsWithChildren) {
+function ClientLayout(props: PropsWithChildren) {
   return (
     <div className="min-h-screen flex flex-col cursor-default">
-      <Navbar />
-      <div className="flex-grow h-full w-full px-20 py-10">
-        {props.children}
-      </div>
+      <Navbar isAdmin={false} />
+      <div className="flex-grow h-full w-full">{props.children}</div>
+    </div>
+  );
+}
+
+function AdminLayout(props: PropsWithChildren) {
+  return (
+    <div className="min-h-screen flex flex-col cursor-default">
+      <Navbar isAdmin />
+      <div className="flex-grow h-full w-full">{props.children}</div>
     </div>
   );
 }
