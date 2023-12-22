@@ -7,6 +7,8 @@ import checkQuizValidity from "../utils/checkQuizValidity";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { serverUrl } from "../utils/serverUrl";
 import compareQuizzes from "../utils/compareQuizzes";
+import changeOrderAtIndex from "../utils/changeOrderAtIndex";
+import { Answer, Question } from "../types/Question";
 
 type PropsType = {
   selectedQuiz: Quiz;
@@ -47,6 +49,9 @@ export default function EditQuiz({
   };
 
   //================ UPDATE QUESTION TYPE =================
+  const indexOfFirstCorrectAns = (ques: Question) => {
+    return ques.answers.findIndex((ans) => ans.isCorrect);
+  };
   const handleQuestionTypeChange = (
     index: number,
     value: "single" | "multiple"
@@ -55,10 +60,36 @@ export default function EditQuiz({
       ...prev,
       questions: prev.questions.map((ques, i) =>
         index === i
-          ? {
-              ...ques,
-              type: value,
-            }
+          ? value === "single"
+            ? {
+                ...ques,
+                type: value,
+                answers:
+                  indexOfFirstCorrectAns(ques) === -1
+                    ? ques.answers.map((ans, j) =>
+                        j === 0
+                          ? {
+                              ...ans,
+                              isCorrect: true,
+                            }
+                          : ans
+                      )
+                    : ques.answers.map((ans, j) =>
+                        indexOfFirstCorrectAns(ques) === j
+                          ? {
+                              ...ans,
+                              isCorrect: true,
+                            }
+                          : {
+                              ...ans,
+                              isCorrect: false,
+                            }
+                      ),
+              }
+            : {
+                ...ques,
+                type: value,
+              }
           : ques
       ),
     }));
@@ -99,6 +130,29 @@ export default function EditQuiz({
                       label: value,
                     }
                   : ans
+              ),
+            }
+          : ques
+      ),
+    }));
+  };
+
+  //================ UPDATE ANSWER ORDER =================
+  const handleUpdateAnswerOrder = (
+    qIndex: number,
+    aIndex: number,
+    direction: "up" | "down"
+  ) => {
+    setQuiz((prev) => ({
+      ...prev,
+      questions: prev.questions.map((ques, i) =>
+        qIndex === i
+          ? {
+              ...ques,
+              answers: changeOrderAtIndex<Answer>(
+                ques.answers,
+                aIndex,
+                direction
               ),
             }
           : ques
@@ -310,6 +364,24 @@ export default function EditQuiz({
           <div>
             {question.answers.map((answer, aIndex) => (
               <div key={aIndex} className="flex items-center my-2 gap-4">
+                <div className="flex">
+                  <Icon
+                    icon="mingcute:up-fill"
+                    width={20}
+                    className="border cursor-pointer"
+                    onClick={() =>
+                      handleUpdateAnswerOrder(qIndex, aIndex, "up")
+                    }
+                  />
+                  <Icon
+                    icon="mingcute:down-fill"
+                    width={20}
+                    className="border cursor-pointer"
+                    onClick={() =>
+                      handleUpdateAnswerOrder(qIndex, aIndex, "down")
+                    }
+                  />
+                </div>
                 <input
                   type={question.type === "single" ? "radio" : "checkbox"}
                   value={answer.label}

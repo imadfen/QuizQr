@@ -15,11 +15,19 @@
                 "type": "single",
                 "answers": [
                     {
-                        "label": "new answer",
+                        "label": "new answer 1",
+                        "isCorrect": false
+                    },
+                    {
+                        "label": "new answer 2",
+                        "isCorrect": false
+                    },
+                    {
+                        "label": "new answer 3",
                         "isCorrect": true
                     },
                     {
-                        "label": "new answer",
+                        "label": "new answer 4",
                         "isCorrect": false
                     }
                 ]
