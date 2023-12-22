@@ -12,6 +12,8 @@ router.post("/", authMiddleware, (req: Request, res: Response) => {
         deleteFromQuizzesData(quizId);
         return res.status(200).json({message: "Quiz deleted"});
     } catch (error) {
+        console.log(error);
+        
         return res.status(400).json({ error: "Failed updating data" });
     }
 });

@@ -14,7 +14,7 @@ export default function Creators() {
 
   useEffect(() => {
     fetchQuizzesData();
-  }, [selectedQuiz]);
+  }, []);
 
   const fetchQuizzesData = async () => {
     setLoading(true);
