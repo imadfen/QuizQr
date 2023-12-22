@@ -4,10 +4,13 @@ import generateRandomId from "./generateRandomId";
 import Themes from "./themes";
 
 export default function createEmptyQuiz(): Quiz {
+    const generatedId = generateRandomId();
+    
     return {
-        id: generateRandomId(),
+        id: generatedId,
         theme: Themes[0],
         title: "New Quiz",
+        qrCodeName: `qrcode_${generatedId}.png`,
         questions: [createQuestion()],
         participantsCount: 0,
     }

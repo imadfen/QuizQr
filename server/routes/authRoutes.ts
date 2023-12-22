@@ -31,7 +31,7 @@ router.post('/login', async (req: Request, res: Response) => {
     }
 
     const secretKey = process.env.SECRET_KEY || '';
-    const token = jwt.sign({ userId: user.id }, secretKey, { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user.id }, secretKey, { expiresIn: '4h' });
     return res.json({ token });
   } catch (error) {
     return res.status(400).json({ message: 'Something went wrong' });

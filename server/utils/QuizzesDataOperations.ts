@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { Quiz } from '../types/Quiz';
+import createQrCode from './createQrCode';
 
 const filePath = path.join(__dirname, "..", "data", "quizzes.json");
 
@@ -18,10 +19,11 @@ export function addToQuizzesData(quiz: Quiz) {
 
   const existingQuizIndex = quizzesData.findIndex(quizData => quizData.id === quiz.id)
   
-  if (existingQuizIndex > -1) {
+  if (existingQuizIndex !== -1) {
     quizzesData[existingQuizIndex] = quiz;
   } else {
     quizzesData.push(quiz);
+    createQrCode(quiz.id, quiz.qrCodeName);
   }
 
   const updatedData = JSON.stringify(quizzesData, null, 4);

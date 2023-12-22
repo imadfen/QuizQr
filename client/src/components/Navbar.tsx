@@ -11,24 +11,38 @@ export default function Navbar({ isAdmin }: PropsType) {
   const navigate = useNavigate();
 
   return (
-    <nav className="bg-gray-100 drop-shadow-xl py-4 w-full flex justify-between items-center px-10">
-      <div className="px-4 flex items-center gap-5">
-        <img src={QuizQr_logo} alt="" width={60} />
-        <div className="text-3xl font-black">
-          {isAdmin ? "QuizQr Dashboard" : "QuizQr"}
-        </div>
-      </div>
-      {isAdmin && (
-        <Icon
-          icon="mingcute:exit-fill"
-          width={40}
-          className="cursor-pointer"
-          onClick={() => {
-            logoutUser();
-            navigate("login");
-          }}
-        />
+    <>
+      {isAdmin ? (
+        <nav className="bg-gray-100 drop-shadow-xl py-4 px-2 sm:px-5 md:px-10 w-full flex justify-between items-center">
+          <div
+            className="px-4 flex items-center gap-5 cursor-pointer"
+            onClick={() => navigate("/")}
+          >
+            <img src={QuizQr_logo} alt="" width={60} />
+            <div className="text-xl sm:text-2xl md:text-3xl font-black">
+              QuizQr Dashboard
+            </div>
+          </div>
+          <Icon
+            icon="mingcute:exit-fill"
+            width={30}
+            className="cursor-pointer"
+            onClick={() => {
+              logoutUser();
+              navigate("login");
+            }}
+          />
+        </nav>
+      ) : (
+        <nav className="bg-gray-100 drop-shadow-xl py-4 px-2 sm:px-5 md:px-10 w-full flex justify-between items-center">
+          <div className="px-4 flex items-center gap-5">
+            <img src={QuizQr_logo} alt="" width={60} />
+            <div className="text-xl sm:text-2xl md:text-3xl font-black">
+              QuizQr
+            </div>
+          </div>
+        </nav>
       )}
-    </nav>
+    </>
   );
 }
