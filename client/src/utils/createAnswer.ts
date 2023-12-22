@@ -1,8 +1,8 @@
 import { Answer } from "../types/Question";
 
-export default function createAnswer(): Answer {
+export default function createAnswer(isCorrect: boolean = false): Answer {
     return {
         label: "new answer",
-        isCorrect: false,
+        isCorrect,
     }
 }

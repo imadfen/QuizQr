@@ -11,18 +11,18 @@ export default function Navbar({ isAdmin }: PropsType) {
   const navigate = useNavigate();
 
   return (
-    <nav className="bg-gray-900 py-4 w-full flex justify-between px-10">
+    <nav className="bg-gray-100 drop-shadow-xl py-4 w-full flex justify-between items-center px-10">
       <div className="px-4 flex items-center gap-5">
         <img src={QuizQr_logo} alt="" width={60} />
-        <div className="text-white text-3xl font-bold">
-          {isAdmin ? "QuizQr - Dashboard" : "QuizQr"}
+        <div className="text-3xl font-black">
+          {isAdmin ? "QuizQr Dashboard" : "QuizQr"}
         </div>
       </div>
       {isAdmin && (
         <Icon
           icon="mingcute:exit-fill"
-          width={60}
-          className="text-white cursor-pointer"
+          width={40}
+          className="cursor-pointer"
           onClick={() => {
             logoutUser();
             navigate("login");

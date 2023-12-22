@@ -1,37 +1,46 @@
 import { Quiz } from "../types/Quiz";
 import EditQuiz from "./EditQuiz";
-import Themes from "../utils/themes";
-import createQuestion from "../utils/createQuestion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import QuizList from "../components/QuizList";
 import createEmptyQuiz from "../utils/createEmptyQuiz";
+import { Icon } from "@iconify/react/dist/iconify.js";
+import { serverUrl } from "../utils/serverUrl";
 
 export default function Creators() {
+  const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [selectedQuiz, setSelectedQuiz] = useState<Quiz | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [errorLoading, setErrorLoading] = useState(false);
 
-  const testQuizzes: Quiz[] = [
-    {
-      id: "1",
-      theme: Themes[0],
-      title: "first quiz",
-      questions: [createQuestion()],
-      participantsCount: 100,
-    },
-    {
-      id: "2",
-      theme: Themes[0],
-      title: "second quiz",
-      questions: [createQuestion()],
-      participantsCount: 150,
-    },
-    {
-      id: "3",
-      theme: Themes[0],
-      title: "third quiz",
-      questions: [createQuestion()],
-      participantsCount: 90,
-    },
-  ];
+  useEffect(() => {
+    fetchQuizzesData();
+  }, [selectedQuiz]);
+
+  const fetchQuizzesData = async () => {
+    setLoading(true);
+    setErrorLoading(false);
+
+    fetch(`${serverUrl}/quizzes`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          setErrorLoading(true);
+        }
+      })
+      .then((data) => {
+        setQuizzes(data);
+      })
+      .catch((_) => {
+        setErrorLoading(true);
+      });
+
+    setLoading(false);
+  };
 
   const goBack = () => {
     setSelectedQuiz(null);
@@ -39,17 +48,26 @@ export default function Creators() {
 
   const addQuiz = () => {
     const newQuiz = createEmptyQuiz();
-    testQuizzes.push(newQuiz);
     setSelectedQuiz(newQuiz);
   };
 
-  const handleSaveQuiz = (quiz: Quiz) => {
-    console.log(quiz);
+  const handleDeleteQuiz = () => {
+    fetchQuizzesData();
+    goBack();
+  };
+
+  const handleSaveQuiz = () => {
+    fetchQuizzesData();
+    goBack();
   };
 
   return (
-    <div className="w-full flex flex-col justify-center items-center py-5">
-      {selectedQuiz ? (
+    <div className="w-full min-h-full flex flex-col justify-center items-center py-5">
+      {errorLoading ? (
+        <p className="text-red-500 text-xl font-bold">Something went wrong!</p>
+      ) : loading ? (
+        <Icon icon="line-md:loading-loop" width={60} />
+      ) : selectedQuiz ? (
         <EditQuiz
           selectedQuiz={selectedQuiz}
           goBack={goBack}
@@ -57,9 +75,10 @@ export default function Creators() {
         />
       ) : (
         <QuizList
-          quizzes={testQuizzes}
+          quizzes={quizzes}
           selectQuiz={setSelectedQuiz}
           addQuiz={addQuiz}
+          onDeleteQuizDone={handleDeleteQuiz}
         />
       )}
     </div>

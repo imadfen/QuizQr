@@ -5,6 +5,6 @@ export default function createQuestion(): Question {
     return {
         text: "new question",
         type: "single",
-        answers: [createAnswer(), createAnswer()]
+        answers: [createAnswer(true), createAnswer()]
     }
 }

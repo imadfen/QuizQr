@@ -5,16 +5,23 @@ import Themes from "../utils/themes";
 import createAnswer from "../utils/createAnswer";
 import checkQuizValidity from "../utils/checkQuizValidity";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { serverUrl } from "../utils/serverUrl";
+import compareQuizzes from "../utils/compareQuizzes";
 
 type PropsType = {
   selectedQuiz: Quiz;
   goBack: () => void;
-  onSaveQuizDone: (quiz: Quiz) => void
+  onSaveQuizDone: () => void;
 };
 
-export default function EditQuiz({ selectedQuiz, goBack, onSaveQuizDone }: PropsType) {
+export default function EditQuiz({
+  selectedQuiz,
+  goBack,
+  onSaveQuizDone,
+}: PropsType) {
   const [quiz, setQuiz] = useState<Quiz>(selectedQuiz);
-  const [validityError, setValidityError] = useState("");
+  const [saveError, setSaveError] = useState("");
+  const [saveLoading, setSaveLoading] = useState(false);
 
   //================ UPDATE QUIZ TITLE =================
   const handleQuizTitleChange = (value: string) => {
@@ -69,7 +76,7 @@ export default function EditQuiz({ selectedQuiz, goBack, onSaveQuizDone }: Props
   const handleDeleteQuestion = (qIndex: number) => {
     setQuiz((prev) => ({
       ...prev,
-      questions: prev.questions.filter((ques, i) => i !== qIndex),
+      questions: prev.questions.filter((_, i) => i !== qIndex),
     }));
   };
 
@@ -113,7 +120,6 @@ export default function EditQuiz({ selectedQuiz, goBack, onSaveQuizDone }: Props
     aIndex: number,
     value: boolean
   ) => {
-    const newQuiz = quiz;
     setQuiz((prev) => ({
       ...prev,
       questions: prev.questions.map((ques, i) =>
@@ -169,7 +175,7 @@ export default function EditQuiz({ selectedQuiz, goBack, onSaveQuizDone }: Props
         qIndex === i
           ? {
               ...ques,
-              answers: ques.answers.filter((ans, j) => aIndex !== j),
+              answers: ques.answers.filter((_, j) => aIndex !== j),
             }
           : ques
       ),
@@ -177,34 +183,58 @@ export default function EditQuiz({ selectedQuiz, goBack, onSaveQuizDone }: Props
   };
 
   //================ SUBMIT =================
-  const handleSubmit = () => {
-    setValidityError("");
+  const handleSubmit = async () => {
+    setSaveLoading(true);
+
+    setSaveError("");
     const validityCheck = checkQuizValidity(quiz);
 
-    if (validityCheck === true) {
-      onSaveQuizDone(quiz);
+    if (validityCheck !== true) {
+      return setSaveError(validityCheck.error);
+    }
+
+    const response = await fetch(`${serverUrl}/save-quiz`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      method: "POST",
+      body: JSON.stringify(quiz),
+    });
+
+    setSaveLoading(false);
+
+    if (response.ok) {
+      onSaveQuizDone();
     } else {
-      setValidityError(validityCheck.error);
+      return setSaveError("Something went wrong, try again later.");
     }
   };
 
   return (
     <div className="px-4 w-full">
       <div className="flex items-center justify-between">
-        <div
-          onClick={goBack}
-          className="text-white flex items-center gap-3 my-5 cursor-pointer w-fit"
-        >
-          <Icon icon="bxs:left-arrow" width={30} />
-          <p className="text-xl font-bold">Back</p>
+        <div className="flex items-center gap-7">
+          <div
+            onClick={goBack}
+            className="flex items-center gap-3 my-5 cursor-pointer w-fit"
+          >
+            <Icon icon="bxs:left-arrow" width={30} />
+            <p className="text-xl font-bold">Back</p>
+          </div>
+          {!compareQuizzes(quiz, selectedQuiz) && (
+            <p className="text-lg text-red-500 font-semibold">(Not saved)</p>
+          )}
         </div>
         <div className="flex items-center gap-5">
-          <span className="text-red-500">{validityError}</span>
+          <span className="text-red-500 font-bold text-xl">{saveError}</span>
           <button
+            disabled={saveLoading}
             onClick={handleSubmit}
-            className="bg-indigo-500 text-white rounded-md px-4 py-2"
+            className="bg-indigo-500 font-bold text-white rounded-md px-4 py-2 flex items-center gap-3 cursor-pointer"
           >
-            Submit Quiz
+            <Icon icon="material-symbols:save" width={30} />
+            <p>Save Quiz</p>
           </button>
         </div>
       </div>
@@ -253,7 +283,7 @@ export default function EditQuiz({ selectedQuiz, goBack, onSaveQuizDone }: Props
 
       {/* ================= questions ================== */}
       {quiz.questions.map((question, qIndex) => (
-        <div key={qIndex} className="mb-4 p-5 rounded-xl border">
+        <div key={qIndex} className="mb-4 p-5 rounded-xl border-4">
           <div className="flex items-center justify-between">
             <label
               htmlFor={`question${qIndex + 1}`}
@@ -273,7 +303,7 @@ export default function EditQuiz({ selectedQuiz, goBack, onSaveQuizDone }: Props
             id={`question${qIndex + 1}`}
             value={question.text}
             onChange={(e) => handleQuestionTextChange(qIndex, e.target.value)}
-            className="border border-gray-300 rounded-md p-2 mb-2 w-full"
+            className="border-4 border-gray-300 rounded-md p-2 mb-2 w-full"
           />
 
           {/* ===================== answers ======================= */}
@@ -287,13 +317,18 @@ export default function EditQuiz({ selectedQuiz, goBack, onSaveQuizDone }: Props
                   onChange={(e) =>
                     handleCorrectAnswerChange(qIndex, aIndex, e.target.checked)
                   }
-                  className="border border-gray-300 rounded-md p-2 mr-2"
+                  className="border-4 border-gray-400 rounded-md p-2 mr-2"
                 />
                 <input
                   type="text"
                   value={answer.label}
                   placeholder="Answer label"
-                  className="p-2"
+                  className="p-2 border-2 rounded-md"
+                  style={
+                    answer.isCorrect
+                      ? { background: "green", color: "white" }
+                      : { borderColor: "red" }
+                  }
                   onChange={(e) =>
                     handleAnswerChange(qIndex, aIndex, e.target.value)
                   }

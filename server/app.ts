@@ -1,8 +1,11 @@
 import express from 'express';
 import cors from "cors";
 import bodyParser from 'body-parser';
-import helloRoute from "./routes/helloRoute"
-import authRoutes from "./routes/authRoutes"
+import helloRoute from "./routes/helloRoute";
+import authRoutes from "./routes/authRoutes";
+import quizzesRoute from "./routes/quizzesRoute";
+import quizSaveRoute from "./routes/quizSaveRoute";
+import quizDeleteRoute from "./routes/quizDeleteRoute";
 
 
 const app = express();
@@ -20,6 +23,12 @@ app.use(cors({
 app.use('/', helloRoute);
 
 app.use('/auth', authRoutes);
+
+app.use("/quizzes", quizzesRoute);
+
+app.use("/save-quiz", quizSaveRoute);
+
+app.use("/delete-quiz", quizDeleteRoute);
 
 
 app.listen(port, () => {
