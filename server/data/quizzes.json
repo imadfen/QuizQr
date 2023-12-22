@@ -33,7 +33,8 @@
                 ]
             }
         ],
-        "participantsCount": 0
+        "participantsCount": 0,
+        "isPublished": false
     },
     {
         "id": "0s90Giy4eL",
@@ -61,7 +62,8 @@
                 ]
             }
         ],
-        "participantsCount": 0
+        "participantsCount": 0,
+        "isPublished": true
     },
     {
         "id": "RoUe8ONr0m",
@@ -89,6 +91,7 @@
                 ]
             }
         ],
-        "participantsCount": 0
+        "participantsCount": 0,
+        "isPublished": true
     }
 ]

@@ -33,6 +33,14 @@ export default function EditQuiz({
     }));
   };
 
+  //================ UPDATE QUIZ TITLE =================
+  const handleUpdateQuizPublishSwitch = () => {
+    setQuiz((prev) => ({
+      ...prev,
+      isPublished: !prev.isPublished,
+    }));
+  };
+
   //================ UPDATE QUESTION TEXT =================
   const handleQuestionTextChange = (index: number, value: string) => {
     setQuiz((prev) => ({
@@ -282,6 +290,21 @@ export default function EditQuiz({
         </div>
         <div className="flex items-center gap-5">
           <span className="text-red-500 font-bold text-xl">{saveError}</span>
+          {quiz.isPublished ? (
+            <button
+              className="bg-green-500 font-bold text-white rounded-md px-4 py-2 flex items-center gap-3 cursor-pointer"
+              onClick={handleUpdateQuizPublishSwitch}
+            >
+              Published
+            </button>
+          ) : (
+            <button
+              className="bg-white border-4 border-red-500 font-bold text-red-500 rounded-md px-4 py-2 flex items-center gap-3 cursor-pointer"
+              onClick={handleUpdateQuizPublishSwitch}
+            >
+              Not published
+            </button>
+          )}
           <button
             disabled={saveLoading}
             onClick={handleSubmit}

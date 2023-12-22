@@ -11,6 +11,7 @@ export default function createEmptyQuiz(): Quiz {
         theme: Themes[0],
         title: "New Quiz",
         qrCodeName: `qrcode_${generatedId}.png`,
+        isPublished: false,
         questions: [createQuestion()],
         participantsCount: 0,
     }

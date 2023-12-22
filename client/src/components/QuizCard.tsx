@@ -29,6 +29,7 @@ export default function QuizCard({
         className="cursor-pointer absolute bottom-5 right-5 z-10"
         style={{ color: quiz.theme.text }}
       />
+      <div className="w-4 aspect-square rounded-full absolute top-5 right-5" style={{background: quiz.isPublished ? "#6ef246" : "#f54c4c"}}></div>
       <div
         onClick={selectQuiz}
         className="rounded-md p-4 w-80 mb-4 flex items-center gap-2"

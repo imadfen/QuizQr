@@ -12,6 +12,7 @@ export type Quiz = {
     title: string;
     theme: Theme;
     qrCodeName: string;
+    isPublished: boolean;
     questions: Question[];
     participantsCount: number;
 }
