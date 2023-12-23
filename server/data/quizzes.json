@@ -2,17 +2,17 @@
     {
         "id": "XhP6iNwAK1",
         "theme": {
-            "id": "5",
-            "name": "Pastel Pink & Mint",
-            "text": "#ffb6c1",
-            "background": "#98ff98"
+            "id": "2",
+            "name": "Midnight Purple & Gold",
+            "text": "#ffd700",
+            "background": "#2e1a47"
         },
-        "title": "New Quiz",
+        "title": "Test Quiz",
         "qrCodeName": "qrcode_XhP6iNwAK1.png",
         "questions": [
             {
-                "text": "new question",
-                "type": "single",
+                "text": "question 1",
+                "type": "multiple",
                 "answers": [
                     {
                         "label": "new answer 1",
@@ -28,6 +28,34 @@
                     },
                     {
                         "label": "new answer 4",
+                        "isCorrect": false
+                    }
+                ]
+            },
+            {
+                "text": "new question",
+                "type": "single",
+                "answers": [
+                    {
+                        "label": "new answer",
+                        "isCorrect": true
+                    },
+                    {
+                        "label": "new answer",
+                        "isCorrect": false
+                    }
+                ]
+            },
+            {
+                "text": "new question",
+                "type": "single",
+                "answers": [
+                    {
+                        "label": "new answer",
+                        "isCorrect": true
+                    },
+                    {
+                        "label": "new answer",
                         "isCorrect": false
                     }
                 ]
@@ -63,7 +91,7 @@
             }
         ],
         "participantsCount": 0,
-        "isPublished": true
+        "isPublished": false
     },
     {
         "id": "RoUe8ONr0m",
@@ -92,6 +120,35 @@
             }
         ],
         "participantsCount": 0,
-        "isPublished": true
+        "isPublished": false
+    },
+    {
+        "id": "HsIcRzd3DRYYi0rZBt5uEt3zOvT66X",
+        "theme": {
+            "id": "0",
+            "name": "Classic Blue & White",
+            "text": "#0f4c81",
+            "background": "#ffffff"
+        },
+        "title": "New Quiz",
+        "qrCodeName": "qrcode_HsIcRzd3DRYYi0rZBt5uEt3zOvT66X.png",
+        "isPublished": true,
+        "questions": [
+            {
+                "text": "new question",
+                "type": "single",
+                "answers": [
+                    {
+                        "label": "new answer",
+                        "isCorrect": true
+                    },
+                    {
+                        "label": "new answer",
+                        "isCorrect": false
+                    }
+                ]
+            }
+        ],
+        "participantsCount": 0
     }
 ]

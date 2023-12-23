@@ -12,6 +12,7 @@ import checkLogin from "./utils/checkLogin";
 import Login from "./pages/Login";
 import { PropsWithChildren } from "react";
 import Navbar from "./components/Navbar";
+import QuizPlay from "./pages/QuizPlay";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,6 +23,12 @@ const router = createBrowserRouter(
           <ClientLayout>
             <Home />
           </ClientLayout>
+        }
+      />
+      <Route
+        path="/quiz/:quizId"
+        element={
+            <QuizPlay />
         }
       />
       <Route path="creators">
@@ -66,7 +73,7 @@ function ClientLayout(props: PropsWithChildren) {
   return (
     <div className="min-h-screen flex flex-col cursor-default">
       <Navbar isAdmin={false} />
-      <div className="flex-grow h-full w-full">{props.children}</div>
+      <div className="flex-grow h-full w-full flex">{props.children}</div>
     </div>
   );
 }
@@ -75,7 +82,7 @@ function AdminLayout(props: PropsWithChildren) {
   return (
     <div className="min-h-screen flex flex-col cursor-default">
       <Navbar isAdmin />
-      <div className="flex-grow h-full w-full">{props.children}</div>
+      <div className="flex-grow h-full w-full flex">{props.children}</div>
     </div>
   );
 }
