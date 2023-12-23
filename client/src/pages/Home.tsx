@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import { serverUrl } from "../utils/serverUrl";
 import InstuctionsSection from "../components/InstuctionsSection";
 import ClientRandomQuizQrCode from "../components/ClientRandomQuizQrCode";
 

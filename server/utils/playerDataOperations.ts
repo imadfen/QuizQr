@@ -4,7 +4,14 @@ import path from "path";
 
 const filePath = path.join(__dirname, "..", "data", "players.json");
 
-export default function savePlayer(player: Player) {
+export function getPlayersOfQuiz(quizId: string) {
+    const data = fs.readFileSync(filePath, 'utf-8');
+    const playersData: Player[] = JSON.parse(data);
+
+    return playersData.filter(player => player.quizId === quizId);
+}
+
+export function savePlayer(player: Player) {
     const data = fs.readFileSync(filePath, 'utf-8');
     const playersData: Player[] = JSON.parse(data);
 

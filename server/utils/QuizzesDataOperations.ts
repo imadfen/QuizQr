@@ -32,6 +32,21 @@ export function addToQuizzesData(quiz: Quiz) {
   fs.writeFileSync(filePath, updatedData, 'utf-8');
 }
 
+export function addParticipantToQuiz(quizId: string) {
+  const data = fs.readFileSync(filePath, 'utf-8');
+  const quizzesData: Quiz[] = JSON.parse(data);
+
+  const existingQuizIndex = quizzesData.findIndex(quizData => quizData.id === quizId)
+
+  if (existingQuizIndex !== -1) {
+    quizzesData[existingQuizIndex].participantsCount++;
+
+    const updatedData = JSON.stringify(quizzesData, null, 4);
+
+    fs.writeFileSync(filePath, updatedData, 'utf-8');
+  }
+}
+
 export function deleteFromQuizzesData(quizId: string) {
   const data = fs.readFileSync(filePath, 'utf-8');
   const quizzesData: Quiz[] = JSON.parse(data);

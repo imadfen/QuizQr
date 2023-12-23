@@ -10,6 +10,7 @@ import quizSaveRoute from "./routes/quizSaveRoute";
 import quizDeleteRoute from "./routes/quizDeleteRoute";
 import qrCodeImageRoute from "./routes/qrCodeImageRoute";
 import savePlayerRoute from "./routes/savePlayerRoute";
+import getScoreboard from "./routes/getScoreboard";
 
 
 const app = express();
@@ -42,6 +43,8 @@ app.use("/delete-quiz", quizDeleteRoute);
 app.use("/qrcode", qrCodeImageRoute);
 
 app.use("/save-player", savePlayerRoute);
+
+app.use("/get-scoreboard", getScoreboard);
 
 
 app.listen(port, () => {

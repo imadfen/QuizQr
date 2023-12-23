@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import { Request, Response } from 'express';
 import { Player } from '../types/Player';
-import savePlayer from '../utils/savePlayer';
+import { savePlayer } from '../utils/playerDataOperations';
+import { addParticipantToQuiz } from '../utils/QuizzesDataOperations';
 
 const router = Router();
 
@@ -10,6 +11,7 @@ router.post("/", (req: Request, res: Response) => {
 
     try {
         savePlayer(player);
+        addParticipantToQuiz(player.quizId);
         return res.status(200).json({ message: "player saved" });
     } catch (error) {
         console.log(error);
