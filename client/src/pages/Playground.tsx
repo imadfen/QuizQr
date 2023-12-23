@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Quiz } from "../types/Quiz";
 import createCorrectAnswersList from "../utils/createCorrectAnswersList";
 import createUserAnswersList from "../utils/createUserAnswersList";
@@ -32,12 +32,6 @@ export default function Playground({
   const [confirmedUserAnswers, setConfirmedUserAnswers] = useState<
     (boolean | null)[][]
   >(createUserConfirmedAnswers(quiz.questions));
-
-  useEffect(() => {
-    if (submitedAnswers.length === quiz.questions.length) {
-      onDone(score);
-    }
-  }, [submitedAnswers]);
 
   const handleSwitchResponse = (
     qIndex: number,
