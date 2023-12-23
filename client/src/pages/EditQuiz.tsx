@@ -111,6 +111,17 @@ export default function EditQuiz({
     }));
   };
 
+  //================ UPDATE QUESTION ORDER =================
+  const handleUpdateQuestionOrder = (
+    qIndex: number,
+    direction: "up" | "down"
+  ) => {
+    setQuiz((prev) => ({
+      ...prev,
+      questions: changeOrderAtIndex(prev.questions, qIndex, direction),
+    }));
+  };
+
   //================ DELETE QUESTION =================
   const handleDeleteQuestion = (qIndex: number) => {
     setQuiz((prev) => ({
@@ -336,7 +347,7 @@ export default function EditQuiz({
         </div>
 
         {/* ======================= themes ======================== */}
-        <div className="flex gap-3">
+        <div className="flex gap-3 justify-center">
           {Themes.map((theme, i) => (
             <div
               key={i}
@@ -368,12 +379,28 @@ export default function EditQuiz({
             >
               Question {qIndex + 1}:
             </label>
-            <Icon
-              icon="material-symbols:delete"
-              className="cursor-pointer"
-              width={30}
-              onClick={() => handleDeleteQuestion(qIndex)}
-            />
+            <div className="flex items-center gap-5">
+              <div className="flex">
+                <Icon
+                  icon="mingcute:up-fill"
+                  width={30}
+                  className="border cursor-pointer"
+                  onClick={() => handleUpdateQuestionOrder(qIndex, "up")}
+                />
+                <Icon
+                  icon="mingcute:down-fill"
+                  width={30}
+                  className="border cursor-pointer"
+                  onClick={() => handleUpdateQuestionOrder(qIndex, "down")}
+                />
+              </div>
+              <Icon
+                icon="material-symbols:delete"
+                className="cursor-pointer"
+                width={30}
+                onClick={() => handleDeleteQuestion(qIndex)}
+              />
+            </div>
           </div>
           <input
             type="text"
